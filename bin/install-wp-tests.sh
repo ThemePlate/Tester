@@ -18,7 +18,7 @@ WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress}
 
 download() {
     if [ `which curl` ]; then
-        curl -s "$1" > "$2";
+        curl -Ls "$1" > "$2";
     elif [ `which wget` ]; then
         wget -nv -O "$2" "$1"
     fi
@@ -26,10 +26,10 @@ download() {
 
 if [[ $WP_VERSION =~ ^[0-9]+\.[0-9]+\-(beta|RC)[0-9]+$ ]]; then
 	WP_BRANCH=${WP_VERSION%\-*}
-	WP_TESTS_TAG="branches/$WP_BRANCH"
+	WP_TESTS_TAG="heads/$WP_BRANCH"
 
 elif [[ $WP_VERSION =~ ^[0-9]+\.[0-9]+$ ]]; then
-	WP_TESTS_TAG="branches/$WP_VERSION"
+	WP_TESTS_TAG="heads/$WP_VERSION"
 elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0-9]+ ]]; then
 	if [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0] ]]; then
 		# version x.x.0 means the first release of the major version, so strip off the .0 and download version x.x
@@ -38,7 +38,7 @@ elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0-9]+ ]]; then
 		WP_TESTS_TAG="tags/$WP_VERSION"
 	fi
 elif [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
-	WP_TESTS_TAG="trunk"
+	WP_TESTS_TAG="heads/trunk"
 else
 	# http serves a single offer, whereas https serves multiple. we only want one
 	download http://api.wordpress.org/core/version-check/1.7/ /tmp/wp-latest.json
@@ -61,10 +61,7 @@ install_wp() {
 	mkdir -p $WP_CORE_DIR
 
 	if [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
-		mkdir -p $TMPDIR/wordpress-trunk
-		rm -rf $TMPDIR/wordpress-trunk/*
-		svn export --quiet https://core.svn.wordpress.org/trunk $TMPDIR/wordpress-trunk/wordpress
-		mv $TMPDIR/wordpress-trunk/wordpress/* $WP_CORE_DIR
+		download https://github.com/WordPress/WordPress/archive/refs/heads/master.tar.gz  $TMPDIR/wordpress.tar.gz
 	else
 		if [ $WP_VERSION == 'latest' ]; then
 			local ARCHIVE_NAME='latest'
@@ -88,9 +85,9 @@ install_wp() {
 			local ARCHIVE_NAME="wordpress-$WP_VERSION"
 		fi
 		download https://wordpress.org/${ARCHIVE_NAME}.tar.gz  $TMPDIR/wordpress.tar.gz
-		tar --strip-components=1 -zxmf $TMPDIR/wordpress.tar.gz -C $WP_CORE_DIR
 	fi
 
+	tar --strip-components=1 -zxmf $TMPDIR/wordpress.tar.gz -C $WP_CORE_DIR
 	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
 }
 
@@ -105,14 +102,15 @@ install_test_suite() {
 	# set up testing suite if it doesn't yet exist
 	if [ ! -d $WP_TESTS_DIR ]; then
 		# set up testing suite
-		mkdir -p $WP_TESTS_DIR
-		rm -rf $WP_TESTS_DIR/{includes,data}
-		svn export --quiet --ignore-externals https://develop.svn.wordpress.org/${WP_TESTS_TAG}/tests/phpunit/includes/ $WP_TESTS_DIR/includes
-		svn export --quiet --ignore-externals https://develop.svn.wordpress.org/${WP_TESTS_TAG}/tests/phpunit/data/ $WP_TESTS_DIR/data
+		mkdir -p $WP_TESTS_DIR/temp
+		download https://github.com/WordPress/wordpress-develop/archive/refs/${WP_TESTS_TAG}.tar.gz  $TMPDIR/wordpress-develop.tar.gz
+		tar --strip-components=1 -zxmf $TMPDIR/wordpress-develop.tar.gz -C $WP_TESTS_DIR/temp
+		mv $WP_TESTS_DIR/temp/tests/phpunit/includes $WP_TESTS_DIR
+		mv $WP_TESTS_DIR/temp/tests/phpunit/data $WP_TESTS_DIR
 	fi
 
-	if [ ! -f wp-tests-config.php ]; then
-		download https://develop.svn.wordpress.org/${WP_TESTS_TAG}/wp-tests-config-sample.php "$WP_TESTS_DIR"/wp-tests-config.php
+	if [ ! -f $WP_TESTS_DIR/wp-tests-config.php ]; then
+		mv $WP_TESTS_DIR/temp/wp-tests-config-sample.php "$WP_TESTS_DIR"/wp-tests-config.php
 		# remove all forward slashes in the end
 		sed $ioption "s: ) . '/src/':, 3 ) . '/$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
 		sed $ioption "s:dirname( __FILE__ ) . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
@@ -123,6 +121,7 @@ install_test_suite() {
 		sed $ioption "s|localhost|${DB_HOST}|" "$WP_TESTS_DIR"/wp-tests-config.php
 	fi
 
+	rm -rf $WP_TESTS_DIR/temp
 }
 
 recreate_db() {
