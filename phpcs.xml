@@ -27,4 +27,10 @@
 	<rule ref="WordPress-Extra" />
 	<!-- Include PHP Compatibility Coding Standard for WordPress. -->
 	<rule ref="PHPCompatibilityWP" />
+
+	<!-- Exclude for PSR-4 autoload -->
+	<rule ref="WordPress.Files.FileName">
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+	</rule>
 </ruleset>
