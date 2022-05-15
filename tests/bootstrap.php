@@ -19,7 +19,13 @@ if ( false !== $_phpunit_polyfills_path ) {
 }
 
 if ( ! file_exists( "{$_tests_dir}/includes/functions.php" ) ) {
-	echo "Could not find {$_tests_dir}/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	$_work_dir = '.';
+
+	if ( getcwd() !== dirname( __FILE__, 2 ) ) {
+		$_work_dir .= '/vendor';
+	}
+
+	echo "Could not find {$_tests_dir}/includes/functions.php, have you run {$_work_dir}/bin/install-wp-tests ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	exit( 1 );
 }
 
