@@ -6,6 +6,12 @@
  * @since   0.1.0
  */
 
+$_test_suite = array_search( '--testsuite', $GLOBALS['argv'], true );
+
+if ( false === $_test_suite || 'integration' !== $GLOBALS['argv'][ $_test_suite + 1 ] ) {
+	return;
+}
+
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
 if ( ! $_tests_dir ) {
