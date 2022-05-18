@@ -5,6 +5,8 @@
  * @since   0.1.0
  */
 
+namespace ThemePlate\Tester\Tests\Unit;
+
 use ThemePlate\Tester\Utils;
 use PHPUnit\Framework\TestCase;
 
