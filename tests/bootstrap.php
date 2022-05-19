@@ -15,7 +15,7 @@ if ( false !== $_test_suite && 'integration' !== strtolower( $GLOBALS['argv'][ $
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
 if ( ! $_tests_dir ) {
-	$_tests_dir = './.cache/wordpress-tests-lib';
+	$_tests_dir = getcwd() . '/.cache/wordpress-tests-lib';
 }
 
 // Forward custom PHPUnit Polyfills configuration to PHPUnit bootstrap file.
