@@ -23,6 +23,7 @@
 	},
 	"require": {
 		"php": "^7.4|^8.0",
+		"brain/monkey": "^2.6",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
 		"phpcompatibility/phpcompatibility-wp": "^2.1",
 		"phpstan/phpstan": "^1.6",
