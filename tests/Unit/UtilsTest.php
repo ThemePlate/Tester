@@ -29,6 +29,33 @@ class UtilsTest extends TestCase {
 	}
 
 
+	public function test_invoking_unknown_method() {
+
+		$value = Utils::invoke_inaccessible_method( $this->unliberated, 'tester' );
+
+		$this->assertNull( $value );
+
+	}
+
+
+	public function test_getting_unknown_property() {
+
+		$value = Utils::get_inaccessible_property( $this->unliberated, 'tester' );
+
+		$this->assertNull( $value );
+
+	}
+
+
+	public function test_setting_unknown_property() {
+
+		Utils::set_inaccessible_property( $this->unliberated, 'tester', true );
+
+		$this->assertNull( Utils::get_inaccessible_property( $this->unliberated, 'tester' ) );
+
+	}
+
+
 	public function test_liberate_method() {
 
 		$value = Utils::invoke_inaccessible_method( $this->unliberated, 'method_name', array( 1 ) );

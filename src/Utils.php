@@ -47,21 +47,39 @@ class Utils {
 
 	public static function invoke_inaccessible_method( object $instance, string $name, array $args = array() ) {
 
-		return self::get_reflection_method( get_class( $instance ), $name )->invokeArgs( $instance, $args );
+		$reflection = self::get_reflection_method( get_class( $instance ), $name );
+
+		if ( null === $reflection ) {
+			return null;
+		}
+
+		return $reflection->invokeArgs( $instance, $args );
 
 	}
 
 
 	public static function get_inaccessible_property( object $instance, string $name ) {
 
-		return self::get_reflection_property( get_class( $instance ), $name )->getValue( $instance );
+		$reflection = self::get_reflection_property( get_class( $instance ), $name );
+
+		if ( null === $reflection ) {
+			return null;
+		}
+
+		return $reflection->getValue( $instance );
 
 	}
 
 
 	public static function set_inaccessible_property( object $instance, string $name, $value ): void {
 
-		self::get_reflection_property( get_class( $instance ), $name )->setValue( $instance, $value );
+		$reflection = self::get_reflection_property( get_class( $instance ), $name );
+
+		if ( null === $reflection ) {
+			return;
+		}
+
+		$reflection->setValue( $instance, $value );
 
 	}
 
