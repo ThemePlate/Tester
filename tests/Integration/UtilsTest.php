@@ -34,6 +34,16 @@ class UtilsTest extends WP_UnitTestCase {
 	}
 
 
+	public function test_set_user_site_id() {
+
+		$expect = 666;
+
+		Utils::set_inaccessible_property( $this->user, 'site_id', $expect );
+		$this->assertSame( $expect, Utils::get_inaccessible_property( $this->user, 'site_id' ) );
+
+	}
+
+
 	public function test_get_user_caps_data() {
 
 		$value = Utils::invoke_inaccessible_method( $this->user, 'get_caps_data' );

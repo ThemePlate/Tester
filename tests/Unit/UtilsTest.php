@@ -48,4 +48,14 @@ class UtilsTest extends TestCase {
 
 	}
 
+
+	public function test_forced_property_value() {
+
+		$expect = 'OWNED!';
+
+		Utils::set_inaccessible_property( $this->unliberated, 'property_name', $expect );
+		$this->assertSame( $expect, Utils::get_inaccessible_property( $this->unliberated, 'property_name' ) );
+
+	}
+
 }

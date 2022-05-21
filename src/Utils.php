@@ -58,4 +58,11 @@ class Utils {
 
 	}
 
+
+	public static function set_inaccessible_property( object $instance, string $name, $value ): void {
+
+		self::get_reflection_property( get_class( $instance ), $name )->setValue( $instance, $value );
+
+	}
+
 }
