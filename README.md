@@ -34,6 +34,8 @@ class SampleTest extends WP_UnitTestCase {
 
 		$value = Utils::get_inaccessible_property( $instance, 'property_name' );
 
+		Utils::set_inaccessible_property( $instance, 'wanted_property', $value );
+
 		// Do actual assertions
 	}
 }

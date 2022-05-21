@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <phpunit
+	cacheResultFile=".cache/.phpunit.result.cache"
 	bootstrap="tests/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
