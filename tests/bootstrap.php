@@ -8,7 +8,7 @@
 
 $_test_suite = array_search( '--testsuite', $GLOBALS['argv'], true );
 
-if ( false === $_test_suite || 'integration' !== strtolower( $GLOBALS['argv'][ $_test_suite + 1 ] ) ) {
+if ( false === $_test_suite || ! in_array( strtolower( $GLOBALS['argv'][ $_test_suite + 1 ] ), array( 'default', 'integration' ), true ) ) {
 	return;
 }
 
