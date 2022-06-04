@@ -2,12 +2,18 @@
 <?php
 
 use Symfony\Component\Console\Application;
+use ThemePlate\Tester\AnalyseCommand;
+use ThemePlate\Tester\FixCommand;
+use ThemePlate\Tester\LintCommand;
 use ThemePlate\Tester\TestCommand;
 
 require_once getcwd() . '/vendor/autoload.php';
 
 $application = new Application( 'ThemePlate', '0.1.0' );
 
+$application->add( new AnalyseCommand() );
+$application->add( new FixCommand() );
+$application->add( new LintCommand() );
 $application->add( new TestCommand() );
 
 $application->run();
