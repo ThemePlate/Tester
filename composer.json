@@ -12,7 +12,7 @@
 	"prefer-stable": true,
 	"bin": [
 		"bin/install-wp-tests",
-		"bin/tester"
+		"bin/themeplate"
 	],
 	"config": {
 		"allow-plugins": {

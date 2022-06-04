@@ -6,7 +6,7 @@ use ThemePlate\Tester\TestCommand;
 
 require_once getcwd() . '/vendor/autoload.php';
 
-$application = new Application( 'ThemePlate Tester', '2.0.0' );
+$application = new Application( 'ThemePlate', '0.1.0' );
 
 $application->add( new TestCommand() );
 
