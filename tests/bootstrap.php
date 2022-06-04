@@ -31,7 +31,7 @@ if ( ! file_exists( "{$_tests_dir}/includes/functions.php" ) ) {
 		$_work_dir .= '/vendor';
 	}
 
-	echo "Could not find {$_tests_dir}/includes/functions.php, have you run {$_work_dir}/bin/install-wp-tests ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo "Could not find {$_tests_dir}/includes/functions.php, have you run `{$_work_dir}/bin/themeplate setup` ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	exit( 1 );
 }
 

@@ -37,7 +37,7 @@ class SetupCommand extends Command {
 
 		$args = array(
 			'sh',
-			dirname( __FILE__, 2 ) . '/bin/install-wp-tests',
+			dirname( __FILE__, 2 ) . '/bin/install-wp-tests.sh',
 			$input->getArgument( 'db-name' ),
 			$input->getArgument( 'db-user' ),
 			$input->getArgument( 'db-pass' ),
