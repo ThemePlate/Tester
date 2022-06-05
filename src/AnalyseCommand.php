@@ -40,12 +40,11 @@ class AnalyseCommand extends Command {
 
 		$process = new Process( $args );
 
-		$process->run();
-
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $process->getErrorOutput();
-		echo $process->getOutput();
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+		$process->run(
+			function ( $type, $buffer ) {
+				echo $buffer; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
+		);
 
 		return Command::SUCCESS;
 
