@@ -27,7 +27,6 @@ download() {
 if [[ $WP_VERSION =~ ^[0-9]+\.[0-9]+\-(beta|RC)[0-9]+$ ]]; then
 	WP_BRANCH=${WP_VERSION%\-*}
 	WP_TESTS_TAG="heads/$WP_BRANCH"
-
 elif [[ $WP_VERSION =~ ^[0-9]+\.[0-9]+$ ]]; then
 	WP_TESTS_TAG="heads/$WP_VERSION"
 elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0-9]+ ]]; then
@@ -41,9 +40,9 @@ elif [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
 	WP_TESTS_TAG="heads/trunk"
 else
 	# http serves a single offer, whereas https serves multiple. we only want one
-	download http://api.wordpress.org/core/version-check/1.7/ /tmp/wp-latest.json
-	grep '[0-9]+\.[0-9]+(\.[0-9]+)?' /tmp/wp-latest.json
-	LATEST_VERSION=$(grep -o '"version":"[^"]*' /tmp/wp-latest.json | sed 's/"version":"//')
+	download http://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
+	grep '[0-9]+\.[0-9]+(\.[0-9]+)?' $TMPDIR/wp-latest.json
+	LATEST_VERSION=$(grep -o '"version":"[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//')
 	if [[ -z "$LATEST_VERSION" ]]; then
 		echo "Latest WordPress version could not be found"
 		exit 1
@@ -53,7 +52,6 @@ fi
 set -ex
 
 install_wp() {
-
 	if [ -d $WP_CORE_DIR ]; then
 		return;
 	fi
@@ -61,7 +59,7 @@ install_wp() {
 	mkdir -p $WP_CORE_DIR
 
 	if [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
-		download https://github.com/WordPress/WordPress/archive/refs/heads/master.tar.gz  $TMPDIR/wordpress.tar.gz
+		local WP_URL='https://github.com/WordPress/WordPress/archive/refs/heads/master.tar.gz'
 	else
 		if [ $WP_VERSION == 'latest' ]; then
 			local ARCHIVE_NAME='latest'
@@ -84,11 +82,18 @@ install_wp() {
 		else
 			local ARCHIVE_NAME="wordpress-$WP_VERSION"
 		fi
-		download https://wordpress.org/${ARCHIVE_NAME}.tar.gz  $TMPDIR/wordpress.tar.gz
+		local WP_URL="https://wordpress.org/${ARCHIVE_NAME}.tar.gz"
+	fi
+
+	if [ ! -f $TMPDIR/wordpress.tar.gz ]; then
+		download $WP_URL $TMPDIR/wordpress.tar.gz
 	fi
 
 	tar --strip-components=1 -zxmf $TMPDIR/wordpress.tar.gz -C $WP_CORE_DIR
-	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
+
+	if [ ! -f $WP_CORE_DIR/wp-content/db.php ]; then
+		download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
+	fi
 }
 
 install_test_suite() {
@@ -103,7 +108,11 @@ install_test_suite() {
 	if [ ! -d $WP_TESTS_DIR ]; then
 		# set up testing suite
 		mkdir -p $WP_TESTS_DIR/temp
-		download https://github.com/WordPress/wordpress-develop/archive/refs/${WP_TESTS_TAG}.tar.gz  $TMPDIR/wordpress-develop.tar.gz
+
+		if [ ! -f $TMPDIR/wordpress-develop.tar.gz ]; then
+			download https://github.com/WordPress/wordpress-develop/archive/refs/${WP_TESTS_TAG}.tar.gz  $TMPDIR/wordpress-develop.tar.gz
+		fi
+
 		tar --strip-components=1 -zxmf $TMPDIR/wordpress-develop.tar.gz -C $WP_TESTS_DIR/temp
 		mv $WP_TESTS_DIR/temp/tests/phpunit/includes $WP_TESTS_DIR
 		mv $WP_TESTS_DIR/temp/tests/phpunit/data $WP_TESTS_DIR
