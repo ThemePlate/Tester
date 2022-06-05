@@ -16,6 +16,8 @@ TMPDIR=$(echo .cache | sed -e "s/\/$//")
 WP_TESTS_DIR=${WP_TESTS_DIR-$TMPDIR/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress}
 
+mkdir -p $TMPDIR
+
 download() {
     if [ `which curl` ]; then
         curl -Ls "$1" > "$2";
