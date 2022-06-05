@@ -39,17 +39,24 @@ class DumpCommand extends Command {
 		$helper = $this->getHelper( 'question' );
 		$source = dirname( __FILE__, 2 ) . DIRECTORY_SEPARATOR;
 
+		$destination = rtrim( $input->getArgument( 'path' ), '/\\' ) . DIRECTORY_SEPARATOR;
+
+		if ( ! is_dir( $destination ) ) {
+			mkdir( $destination );
+		}
+
 		foreach ( $files as $file ) {
-			if ( file_exists( $input->getArgument( 'path' ) . $file ) ) {
+			if ( file_exists( $destination . $file ) ) {
 				$question = new ConfirmationQuestion( 'Overwrite "' . $file . '"? ', false );
 
 				if ( ! $helper->ask( $input, $output, $question ) ) {
+					$output->writeln( 'Skipped "' . $file . '"' );
 					continue;
 				}
 			}
 
-			copy( $source . $file, $input->getArgument( 'path' ) . $file );
-			echo 'Copied "' . $file . "\"\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			copy( $source . $file, $destination . $file );
+			$output->writeln( 'Copied "' . $file . '"' );
 		}
 
 		return Command::SUCCESS;
