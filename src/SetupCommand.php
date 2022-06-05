@@ -23,10 +23,10 @@ class SetupCommand extends Command {
 
 	protected function configure(): void {
 
-		$this->addArgument( 'db-name', InputArgument::REQUIRED, 'Name of the database' );
-		$this->addArgument( 'db-user', InputArgument::REQUIRED, 'DB Authentication: Username' );
-		$this->addArgument( 'db-pass', InputArgument::REQUIRED, 'DB Authentication: Password' );
-		$this->addArgument( 'db-host', InputArgument::REQUIRED, 'Hostname to connect to DB' );
+		$this->addArgument( 'db-name', InputArgument::OPTIONAL, 'Name of the database', 'local' );
+		$this->addArgument( 'db-user', InputArgument::OPTIONAL, 'DB Authentication: Username', 'root' );
+		$this->addArgument( 'db-pass', InputArgument::OPTIONAL, 'DB Authentication: Password', 'root' );
+		$this->addArgument( 'db-host', InputArgument::OPTIONAL, 'Hostname to connect to DB', 'localhost' );
 		$this->addArgument( 'wp-version', InputArgument::OPTIONAL, 'WordPress version to install', 'latest' );
 		$this->addArgument( 'skip-database-creation', InputArgument::OPTIONAL, 'Skip database creation', false );
 
