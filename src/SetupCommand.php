@@ -28,7 +28,7 @@ class SetupCommand extends Command {
 		$this->addOption( 'db-pass', null, InputOption::VALUE_OPTIONAL, 'DB Authentication: Password', 'root' );
 		$this->addOption( 'db-host', null, InputOption::VALUE_OPTIONAL, 'Hostname to connect to DB', 'localhost' );
 		$this->addOption( 'wp-version', null, InputOption::VALUE_OPTIONAL, 'WordPress version to install', 'latest' );
-		$this->addOption( 'skip-database-creation', null, InputOption::VALUE_OPTIONAL, 'Skip database creation', false );
+		$this->addOption( 'database-creation', null, InputOption::VALUE_OPTIONAL, 'Database creation [true|false|force]', 'true' );
 
 	}
 
@@ -43,7 +43,7 @@ class SetupCommand extends Command {
 			$input->getOption( 'db-pass' ),
 			$input->getOption( 'db-host' ),
 			$input->getOption( 'wp-version' ),
-			$input->getOption( 'skip-database-creation' ),
+			$input->getOption( 'database-creation' ),
 		);
 
 		$process = new Process( $args );

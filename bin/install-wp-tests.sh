@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ $# -lt 3 ]; then
-	echo "usage: $(basename $0) <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]"
+	echo "usage: $(basename $0) <db-name> <db-user> <db-pass> [db-host] [wp-version] [database-create]"
 	exit 1
 fi
 
@@ -10,7 +10,7 @@ DB_USER=$2
 DB_PASS=$3
 DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
-SKIP_DB_CREATE=${6-false}
+DB_CREATE=${6-true}
 
 TMPDIR=$(echo .cache | sed -e "s/\/$//")
 WP_TESTS_DIR=${WP_TESTS_DIR-$TMPDIR/wordpress-tests-lib}
@@ -123,16 +123,13 @@ install_test_suite() {
 }
 
 recreate_db() {
-	shopt -s nocasematch
-	if [[ $1 =~ ^(y|yes)$ ]]
-	then
+	if [ ${DB_CREATE} = "force" ]; then
 		mysqladmin drop $DB_NAME -f --user="$DB_USER" --password="$DB_PASS"$EXTRA
 		create_db
 		echo "Recreated the database ($DB_NAME)."
 	else
 		echo "Leaving the existing database ($DB_NAME) in place."
 	fi
-	shopt -u nocasematch
 }
 
 create_db() {
@@ -140,8 +137,7 @@ create_db() {
 }
 
 install_db() {
-
-	if [ ${SKIP_DB_CREATE} = "true" ]; then
+	if [ ${DB_CREATE} = "false" ]; then
 		return 0
 	fi
 
@@ -164,9 +160,7 @@ install_db() {
 	# create database
 	if [ $(mysql --user="$DB_USER" --password="$DB_PASS"$EXTRA --execute='show databases;' | grep ^$DB_NAME$) ]
 	then
-		echo "Reinstalling will delete the existing test database ($DB_NAME)"
-		read -p 'Are you sure you want to proceed? [y/N]: ' DELETE_EXISTING_DB
-		recreate_db $DELETE_EXISTING_DB
+		recreate_db
 	else
 		create_db
 	fi
