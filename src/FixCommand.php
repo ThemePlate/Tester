@@ -39,6 +39,7 @@ class FixCommand extends Command {
 		$args = array(
 			'./vendor/bin/phpcbf',
 			'--standard=' . $config,
+			'--basepath=',
 			$input->getArgument( 'path' ),
 		);
 
