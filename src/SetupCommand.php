@@ -23,12 +23,12 @@ class SetupCommand extends Command {
 
 	protected function configure(): void {
 
-		$this->addArgument( 'db-name', InputArgument::OPTIONAL, 'Name of the database', 'local' );
-		$this->addArgument( 'db-user', InputArgument::OPTIONAL, 'DB Authentication: Username', 'root' );
-		$this->addArgument( 'db-pass', InputArgument::OPTIONAL, 'DB Authentication: Password', 'root' );
-		$this->addArgument( 'db-host', InputArgument::OPTIONAL, 'Hostname to connect to DB', 'localhost' );
-		$this->addArgument( 'wp-version', InputArgument::OPTIONAL, 'WordPress version to install', 'latest' );
-		$this->addArgument( 'skip-database-creation', InputArgument::OPTIONAL, 'Skip database creation', false );
+		$this->addOption( 'db-name', null, InputOption::VALUE_OPTIONAL, 'Name of the database', 'local' );
+		$this->addOption( 'db-user', null, InputOption::VALUE_OPTIONAL, 'DB Authentication: Username', 'root' );
+		$this->addOption( 'db-pass', null, InputOption::VALUE_OPTIONAL, 'DB Authentication: Password', 'root' );
+		$this->addOption( 'db-host', null, InputOption::VALUE_OPTIONAL, 'Hostname to connect to DB', 'localhost' );
+		$this->addOption( 'wp-version', null, InputOption::VALUE_OPTIONAL, 'WordPress version to install', 'latest' );
+		$this->addOption( 'skip-database-creation', null, InputOption::VALUE_OPTIONAL, 'Skip database creation', false );
 
 	}
 
@@ -38,12 +38,12 @@ class SetupCommand extends Command {
 		$args = array(
 			'sh',
 			dirname( __FILE__, 2 ) . '/bin/install-wp-tests.sh',
-			$input->getArgument( 'db-name' ),
-			$input->getArgument( 'db-user' ),
-			$input->getArgument( 'db-pass' ),
-			$input->getArgument( 'db-host' ),
-			$input->getArgument( 'wp-version' ),
-			$input->getArgument( 'skip-database-creation' ),
+			$input->getOption( 'db-name' ),
+			$input->getOption( 'db-user' ),
+			$input->getOption( 'db-pass' ),
+			$input->getOption( 'db-host' ),
+			$input->getOption( 'wp-version' ),
+			$input->getOption( 'skip-database-creation' ),
 		);
 
 		$process = new Process( $args );
