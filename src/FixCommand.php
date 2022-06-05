@@ -29,9 +29,16 @@ class FixCommand extends Command {
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int {
 
+		$base   = DIRECTORY_SEPARATOR . 'phpcs.xml';
+		$config = dirname( __FILE__, 2 ) . $base;
+
+		if ( file_exists( getcwd() . $base ) ) {
+			$config = getcwd() . $base;
+		}
+
 		$args = array(
 			'./vendor/bin/phpcbf',
-			'--standard=' . dirname( __FILE__, 2 ) . '/phpcs.xml',
+			'--standard=' . $config,
 			$input->getArgument( 'path' ),
 		);
 

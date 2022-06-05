@@ -31,6 +31,13 @@ class TestCommand extends Command {
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int {
 
+		$base   = DIRECTORY_SEPARATOR . 'phpcs.xml';
+		$config = dirname( __FILE__, 2 ) . $base;
+
+		if ( file_exists( getcwd() . $base ) ) {
+			$config = getcwd() . $base;
+		}
+
 		$args = array( './vendor/bin/phpunit' );
 		$path = $input->getArgument( 'path' );
 		$type = $input->getOption( 'type' );
@@ -52,7 +59,7 @@ class TestCommand extends Command {
 		}
 
 		$args[] = '--config';
-		$args[] = dirname( __FILE__, 2 ) . '/phpunit.xml';
+		$args[] = $config;
 
 		$process = new Process( $args );
 
