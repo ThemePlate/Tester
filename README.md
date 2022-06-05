@@ -41,8 +41,24 @@ class SampleTest extends WP_UnitTestCase {
 }
 ```
 
-### After `composer install`, run `./vendor/bin/install-wp-tests`
-- Analyse `./vendor/bin/phpstan analyse -c ./vendor/themeplate/tester/phpstan.neon ./tests`
-- Lint `./vendor/bin/phpcs --standard="./vendor/themeplate/tester/phpcs.xml" ./tests`
-- Fix `./vendor/bin/phpcbf --standard="./vendor/themeplate/tester/phpcs.xml" ./tests`
-- Test `./vendor/bin/phpunit -c ./vendor/themeplate/tester/phpunit.xml ./tests`
+### After `composer install`, run `./vendor/bin/themeplate setup`
+- Analyse `./vendor/bin/themeplate analyse`
+- Lint `./vendor/bin/themeplate lint`
+- Fix `./vendor/bin/themeplate fix`
+- Test `./vendor/bin/themeplate test`
+
+#### Dump the configs for customizations `./vendor/bin/themeplate dump`
+
+#### Sample composer scripts
+```json
+...
+    "scripts": {
+        "analyse": "./vendor/bin/themeplate analyse",
+        "lint": "./vendor/bin/themeplate lint",
+        "fix": "./vendor/bin/themeplate fix",
+        "test": "./vendor/bin/themeplate test",
+        "test:unit": "./vendor/bin/themeplate test --type unit",
+        "test:integration": "./vendor/bin/themeplate test --type integration"
+    }
+...
+```
