@@ -12,11 +12,11 @@ DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 DB_CREATE=${6-true}
 
-TMPDIR=$(echo .cache | sed -e "s/\/$//")
-WP_TESTS_DIR=${WP_TESTS_DIR-$TMPDIR/wordpress-tests-lib}
-WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress}
+WP_LOCAL_DIR=$(echo .cache | sed -e "s/\/$//")
+WP_TESTS_DIR=${WP_TESTS_DIR-$WP_LOCAL_DIR/wordpress-tests-lib}
+WP_CORE_DIR=${WP_CORE_DIR-$WP_LOCAL_DIR/wordpress}
 
-mkdir -p $TMPDIR
+mkdir -p $WP_LOCAL_DIR
 
 download() {
     if [ `which curl` ]; then
@@ -60,11 +60,18 @@ install_wp() {
 
 	mkdir -p $WP_CORE_DIR
 
+	local FORCE_DOWNLOAD='false'
+	local ARCHIVE_NAME=''
+	local DOWNLOAD_URL=''
+
 	if [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
-		local WP_URL='https://github.com/WordPress/WordPress/archive/refs/heads/master.tar.gz'
+		ARCHIVE_NAME='wordpress-master'
+		DOWNLOAD_URL='https://github.com/WordPress/WordPress/archive/refs/heads/master.tar.gz'
 	else
 		if [ $WP_VERSION == 'latest' ]; then
-			local ARCHIVE_NAME='latest'
+			FORCE_DOWNLOAD='true'
+			ARCHIVE_NAME='wordpress-latest'
+			DOWNLOAD_URL="https://wordpress.org/latest.tar.gz"
 		elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+ ]]; then
 			# https serves multiple offers, whereas http serves single.
 			download https://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
@@ -77,21 +84,22 @@ install_wp() {
 				LATEST_VERSION=$(grep -o '"version":"'$VERSION_ESCAPED'[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//' | head -1)
 			fi
 			if [[ -z "$LATEST_VERSION" ]]; then
-				local ARCHIVE_NAME="wordpress-$WP_VERSION"
+				ARCHIVE_NAME="wordpress-$WP_VERSION"
 			else
-				local ARCHIVE_NAME="wordpress-$LATEST_VERSION"
+				ARCHIVE_NAME="wordpress-$LATEST_VERSION"
 			fi
+			DOWNLOAD_URL="https://wordpress.org/${ARCHIVE_NAME}.tar.gz"
 		else
-			local ARCHIVE_NAME="wordpress-$WP_VERSION"
+			ARCHIVE_NAME="wordpress-$WP_VERSION"
+			DOWNLOAD_URL="https://wordpress.org/${ARCHIVE_NAME}.tar.gz"
 		fi
-		local WP_URL="https://wordpress.org/${ARCHIVE_NAME}.tar.gz"
 	fi
 
-	if [ ! -f $TMPDIR/wordpress.tar.gz ]; then
-		download $WP_URL $TMPDIR/wordpress.tar.gz
+	if [[ 'true' == $FORCE_DOWNLOAD || ! -f ${TMPDIR}/${ARCHIVE_NAME}.tar.gz ]]; then
+		download $DOWNLOAD_URL ${TMPDIR}/${ARCHIVE_NAME}.tar.gz
 	fi
 
-	tar --strip-components=1 -zxmf $TMPDIR/wordpress.tar.gz -C $WP_CORE_DIR
+	tar --strip-components=1 -zxmf ${TMPDIR}/${ARCHIVE_NAME}.tar.gz -C $WP_CORE_DIR
 
 	if [ ! -f $WP_CORE_DIR/wp-content/db.php ]; then
 		download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
@@ -111,11 +119,13 @@ install_test_suite() {
 		# set up testing suite
 		mkdir -p $WP_TESTS_DIR/temp
 
-		if [ ! -f $TMPDIR/wordpress-develop.tar.gz ]; then
-			download https://github.com/WordPress/wordpress-develop/archive/refs/${WP_TESTS_TAG}.tar.gz  $TMPDIR/wordpress-develop.tar.gz
+
+		local ARCHIVE_NAME=$(echo $WP_TESTS_TAG | sed "s:/\+:-:")
+		if [ ! -f $TMPDIR/wordpress-develop-${ARCHIVE_NAME}.tar.gz ]; then
+			download https://github.com/WordPress/wordpress-develop/archive/refs/${WP_TESTS_TAG}.tar.gz  $TMPDIR/wordpress-develop-${ARCHIVE_NAME}.tar.gz
 		fi
 
-		tar --strip-components=1 -zxmf $TMPDIR/wordpress-develop.tar.gz -C $WP_TESTS_DIR/temp
+		tar --strip-components=1 -zxmf $TMPDIR/wordpress-develop-${ARCHIVE_NAME}.tar.gz -C $WP_TESTS_DIR/temp
 		mv $WP_TESTS_DIR/temp/tests/phpunit/includes $WP_TESTS_DIR
 		mv $WP_TESTS_DIR/temp/tests/phpunit/data $WP_TESTS_DIR
 	fi
