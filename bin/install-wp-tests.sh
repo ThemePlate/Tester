@@ -38,8 +38,6 @@ elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0-9]+ ]]; then
 	else
 		WP_TESTS_TAG="tags/$WP_VERSION"
 	fi
-elif [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
-	WP_TESTS_TAG="heads/trunk"
 else
 	# http serves a single offer, whereas https serves multiple. we only want one
 	download http://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
@@ -49,7 +47,7 @@ else
 		echo "Latest WordPress version could not be found"
 		exit 1
 	fi
-	WP_TESTS_TAG="tags/$LATEST_VERSION"
+	WP_TESTS_TAG="heads/$LATEST_VERSION"
 fi
 set -ex
 
@@ -64,35 +62,30 @@ install_wp() {
 	local ARCHIVE_NAME=''
 	local DOWNLOAD_URL=''
 
-	if [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
-		ARCHIVE_NAME='wordpress-master'
-		DOWNLOAD_URL='https://github.com/WordPress/WordPress/archive/refs/heads/master.tar.gz'
-	else
-		if [ $WP_VERSION == 'latest' ]; then
-			FORCE_DOWNLOAD='true'
-			ARCHIVE_NAME='wordpress-latest'
-			DOWNLOAD_URL="https://wordpress.org/latest.tar.gz"
-		elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+ ]]; then
-			# https serves multiple offers, whereas http serves single.
-			download https://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
-			if [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0] ]]; then
-				# version x.x.0 means the first release of the major version, so strip off the .0 and download version x.x
-				LATEST_VERSION=${WP_VERSION%??}
-			else
-				# otherwise, scan the releases and get the most up to date minor version of the major release
-				local VERSION_ESCAPED=`echo $WP_VERSION | sed 's/\./\\\\./g'`
-				LATEST_VERSION=$(grep -o '"version":"'$VERSION_ESCAPED'[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//' | head -1)
-			fi
-			if [[ -z "$LATEST_VERSION" ]]; then
-				ARCHIVE_NAME="wordpress-$WP_VERSION"
-			else
-				ARCHIVE_NAME="wordpress-$LATEST_VERSION"
-			fi
-			DOWNLOAD_URL="https://wordpress.org/${ARCHIVE_NAME}.tar.gz"
+	if [ $WP_VERSION == 'latest' ]; then
+		FORCE_DOWNLOAD='true'
+		ARCHIVE_NAME='wordpress-latest'
+		DOWNLOAD_URL="https://wordpress.org/latest.tar.gz"
+	elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+ ]]; then
+		# https serves multiple offers, whereas http serves single.
+		download https://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
+		if [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0] ]]; then
+			# version x.x.0 means the first release of the major version, so strip off the .0 and download version x.x
+			LATEST_VERSION=${WP_VERSION%??}
 		else
-			ARCHIVE_NAME="wordpress-$WP_VERSION"
-			DOWNLOAD_URL="https://wordpress.org/${ARCHIVE_NAME}.tar.gz"
+			# otherwise, scan the releases and get the most up to date minor version of the major release
+			local VERSION_ESCAPED=`echo $WP_VERSION | sed 's/\./\\\\./g'`
+			LATEST_VERSION=$(grep -o '"version":"'$VERSION_ESCAPED'[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//' | head -1)
 		fi
+		if [[ -z "$LATEST_VERSION" ]]; then
+			ARCHIVE_NAME="wordpress-$WP_VERSION"
+		else
+			ARCHIVE_NAME="wordpress-$LATEST_VERSION"
+		fi
+		DOWNLOAD_URL="https://wordpress.org/${ARCHIVE_NAME}.tar.gz"
+	else
+		ARCHIVE_NAME="wordpress-$WP_VERSION"
+		DOWNLOAD_URL="https://wordpress.org/${ARCHIVE_NAME}.tar.gz"
 	fi
 
 	if [[ 'true' == $FORCE_DOWNLOAD || ! -f ${TMPDIR}/${ARCHIVE_NAME}.tar.gz ]]; then
