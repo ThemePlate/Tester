@@ -123,14 +123,14 @@ install_test_suite() {
 		mv $WP_TESTS_DIR/temp/tests/phpunit/data $WP_TESTS_DIR
 	fi
 
-	if [ ! -f $WP_TESTS_DIR/wp-tests-config.php ]; then
-		mv $WP_TESTS_DIR/temp/wp-tests-config-sample.php "$WP_TESTS_DIR"/wp-tests-config.php
+	if [ ! -f $WP_LOCAL_DIR/wp-tests-config.php ]; then
+		mv $WP_TESTS_DIR/temp/wp-tests-config-sample.php "$WP_LOCAL_DIR"/wp-tests-config.php
 		# remove all forward slashes in the end
-		sed $ioption "s: ) . '/src/':, 3 ) . '/$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
-		sed $ioption "s/youremptytestdbnamehere/$DB_NAME/" "$WP_TESTS_DIR"/wp-tests-config.php
-		sed $ioption "s/yourusernamehere/$DB_USER/" "$WP_TESTS_DIR"/wp-tests-config.php
-		sed $ioption "s/yourpasswordhere/$DB_PASS/" "$WP_TESTS_DIR"/wp-tests-config.php
-		sed $ioption "s|localhost|${DB_HOST}|" "$WP_TESTS_DIR"/wp-tests-config.php
+		sed $ioption "s: ) . '/src/':, 2 ) . '/$WP_CORE_DIR/':" "$WP_LOCAL_DIR"/wp-tests-config.php
+		sed $ioption "s/youremptytestdbnamehere/$DB_NAME/" "$WP_LOCAL_DIR"/wp-tests-config.php
+		sed $ioption "s/yourusernamehere/$DB_USER/" "$WP_LOCAL_DIR"/wp-tests-config.php
+		sed $ioption "s/yourpasswordhere/$DB_PASS/" "$WP_LOCAL_DIR"/wp-tests-config.php
+		sed $ioption "s|localhost|${DB_HOST}|" "$WP_LOCAL_DIR"/wp-tests-config.php
 	fi
 
 	rm -rf $WP_TESTS_DIR/temp
