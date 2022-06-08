@@ -22,7 +22,7 @@ class AnalyseCommand extends Command {
 
 	protected function configure(): void {
 
-		$this->addArgument( 'path', InputArgument::OPTIONAL, 'Specify the test path', './src' );
+		$this->addArgument( 'path', InputArgument::OPTIONAL, 'Specify the analyse path', './src' );
 
 	}
 
