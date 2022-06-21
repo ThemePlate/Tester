@@ -12,6 +12,8 @@ DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 DB_CREATE=${6-true}
 
+TMPDIR=${TMPDIR-/tmp}
+TMPDIR=$(echo $TMPDIR | sed -e "s/\/$//")
 WP_LOCAL_DIR=$(echo .cache | sed -e "s/\/$//")
 WP_TESTS_DIR=${WP_TESTS_DIR-$WP_LOCAL_DIR/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-$WP_LOCAL_DIR/wordpress}
