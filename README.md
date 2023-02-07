@@ -1,5 +1,15 @@
 # ThemePlate Tester
 
+#### Available commands:
+| Name    | Description       |
+|---------|-------------------|
+| analyse | Analyse the codes |
+| dump    | Dump the configs  |
+| fix     | Fix the codes     |
+| lint    | Lint the codes    |
+| setup   | Setup the tests   |
+| test    | Run the tests     |
+
 ## Usage
 
 ### composer.json
@@ -53,12 +63,12 @@ class SampleTest extends WP_UnitTestCase {
 ```json
 ...
     "scripts": {
-        "analyse": "./vendor/bin/themeplate analyse",
-        "lint": "./vendor/bin/themeplate lint",
-        "fix": "./vendor/bin/themeplate fix",
-        "test": "./vendor/bin/themeplate test",
-        "test:unit": "./vendor/bin/themeplate test --type unit",
-        "test:integration": "./vendor/bin/themeplate test --type integration"
+        "analyse": "themeplate analyse",
+        "lint": "themeplate lint",
+        "fix": "themeplate fix",
+        "test": "themeplate test",
+        "test:unit": "themeplate test --type unit",
+        "test:integration": "themeplate test --type integration"
     }
 ...
 ```
