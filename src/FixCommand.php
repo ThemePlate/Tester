@@ -23,6 +23,7 @@ class FixCommand extends Command {
 	protected function configure(): void {
 
 		$this->addArgument( 'path', InputArgument::OPTIONAL, 'Specify the fix path', './src' );
+		$this->addArgument( 'extra', InputArgument::IS_ARRAY, 'To be passed to <info>phpcbf</info>', array() );
 
 	}
 
@@ -41,6 +42,7 @@ class FixCommand extends Command {
 			'--standard=' . $config,
 			'--basepath=',
 			$input->getArgument( 'path' ),
+			...$input->getArgument( 'extra' ),
 		);
 
 		$process = new Process( $args );

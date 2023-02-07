@@ -24,6 +24,7 @@ class TestCommand extends Command {
 	protected function configure(): void {
 
 		$this->addArgument( 'path', InputArgument::OPTIONAL, 'Specify the test path', './tests' );
+		$this->addArgument( 'extra', InputArgument::IS_ARRAY, 'To be passed to <info>phpunit</info>', array() );
 		$this->addOption( 'type', null, InputOption::VALUE_REQUIRED, 'Filter which testsuite to run', 'default' );
 
 	}
@@ -60,6 +61,8 @@ class TestCommand extends Command {
 
 		$args[] = '--config';
 		$args[] = $config;
+
+		array_push( $args, ...$input->getArgument( 'extra' ) );
 
 		$process = new Process( $args );
 

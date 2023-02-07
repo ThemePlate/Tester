@@ -23,6 +23,7 @@ class LintCommand extends Command {
 	protected function configure(): void {
 
 		$this->addArgument( 'path', InputArgument::OPTIONAL, 'Specify the lint path', './src' );
+		$this->addArgument( 'extra', InputArgument::IS_ARRAY, 'To be passed to <info>phpcs</info>', array() );
 
 	}
 
@@ -40,6 +41,7 @@ class LintCommand extends Command {
 			'./vendor/bin/phpcs',
 			'--standard=' . $config,
 			$input->getArgument( 'path' ),
+			...$input->getArgument( 'extra' ),
 		);
 
 		$process = new Process( $args );
