@@ -32,7 +32,7 @@ class TestCommand extends Command {
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int {
 
-		$base   = DIRECTORY_SEPARATOR . 'phpcs.xml';
+		$base   = DIRECTORY_SEPARATOR . 'phpunit.xml';
 		$config = dirname( __FILE__, 2 ) . $base;
 
 		if ( file_exists( getcwd() . $base ) ) {
