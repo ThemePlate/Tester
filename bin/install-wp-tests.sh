@@ -113,8 +113,8 @@ install_test_suite() {
 		# set up testing suite
 		mkdir -p $WP_TESTS_DIR/temp
 
+		local ARCHIVE_NAME=$(echo $WP_TESTS_TAG | sed "s:/:-:")
 
-		local ARCHIVE_NAME=$(echo $WP_TESTS_TAG | sed "s:/\+:-:")
 		if [ ! -f $TMPDIR/wordpress-develop-${ARCHIVE_NAME}.tar.gz ]; then
 			download https://github.com/WordPress/wordpress-develop/archive/refs/${WP_TESTS_TAG}.tar.gz  $TMPDIR/wordpress-develop-${ARCHIVE_NAME}.tar.gz
 		fi
