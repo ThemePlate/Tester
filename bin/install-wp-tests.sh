@@ -38,13 +38,17 @@ elif [[ $WP_VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 else
 	# http serves a single offer, whereas https serves multiple. we only want one
 	download http://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
-	grep '[0-9]+\.[0-9]+(\.[0-9]+)?' $TMPDIR/wp-latest.json
 	LATEST_VERSION=$(grep -o '"version":"[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//')
 	if [[ -z "$LATEST_VERSION" ]]; then
 		echo "Latest WordPress version could not be found"
 		exit 1
 	fi
-	WP_TESTS_TAG="heads/$LATEST_VERSION"
+	if [[ $LATEST_VERSION =~ [0-9]+\.[0-9]+\.[0] ]]; then
+		# version x.x.0 means the first release of the major version, so strip off the .0 and download version x.x
+		WP_TESTS_TAG="heads/${LATEST_VERSION%??}"
+	else
+		WP_TESTS_TAG="tags/$LATEST_VERSION"
+	fi
 fi
 set -ex
 
