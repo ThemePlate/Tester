@@ -21,11 +21,11 @@ WP_CORE_DIR=${WP_CORE_DIR-$WP_LOCAL_DIR/wordpress}
 mkdir -p $WP_LOCAL_DIR
 
 download() {
-    if [ `which curl` ]; then
-        curl -Ls "$1" > "$2";
-    elif [ `which wget` ]; then
-        wget -nv -O "$2" "$1"
-    fi
+	if [ `which curl` ]; then
+		curl -Ls "$1" > "$2";
+	elif [ `which wget` ]; then
+		wget -nv -O "$2" "$1"
+	fi
 }
 
 if [[ $WP_VERSION =~ ^[0-9]+\.[0-9]+\-(beta|RC)[0-9]+$ ]]; then
@@ -39,10 +39,12 @@ else
 	# http serves a single offer, whereas https serves multiple. we only want one
 	download http://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
 	LATEST_VERSION=$(grep -o '"version":"[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//')
+
 	if [[ -z "$LATEST_VERSION" ]]; then
 		echo "Latest WordPress version could not be found"
 		exit 1
 	fi
+
 	if [[ $LATEST_VERSION =~ [0-9]+\.[0-9]+\.[0] ]]; then
 		# version x.x.0 means the first release of the major version, so strip off the .0 and download version x.x
 		WP_TESTS_TAG="heads/${LATEST_VERSION%??}"
@@ -78,11 +80,13 @@ install_wp() {
 			local VERSION_ESCAPED=`echo $WP_VERSION | sed 's/\./\\\\./g'`
 			LATEST_VERSION=$(grep -o '"version":"'$VERSION_ESCAPED'[^"]*' $TMPDIR/wp-latest.json | sed 's/"version":"//' | head -1)
 		fi
+
 		if [[ -z "$LATEST_VERSION" ]]; then
 			ARCHIVE_NAME="wordpress-$WP_VERSION"
 		else
 			ARCHIVE_NAME="wordpress-$LATEST_VERSION"
 		fi
+
 		DOWNLOAD_URL="https://wordpress.org/${ARCHIVE_NAME}.tar.gz"
 	else
 		ARCHIVE_NAME="wordpress-$WP_VERSION"
@@ -173,8 +177,7 @@ install_db() {
 	fi
 
 	# create database
-	if [ $(mysql --user="$DB_USER" --password="$DB_PASS"$EXTRA --execute='show databases;' | grep ^$DB_NAME$) ]
-	then
+	if [ $(mysql --user="$DB_USER" --password="$DB_PASS"$EXTRA --execute='show databases;' | grep ^$DB_NAME$) ]; then
 		recreate_db
 	else
 		create_db
