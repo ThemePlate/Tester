@@ -22,6 +22,10 @@ class SetupCommand extends Command {
 
 	protected function configure(): void {
 
+		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$this->setName( self::$defaultName );
+		$this->setDescription( self::$defaultDescription );
+		// phpcs:enable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$this->addOption( 'db-name', null, InputOption::VALUE_OPTIONAL, 'Name of the database', 'local' );
 		$this->addOption( 'db-user', null, InputOption::VALUE_OPTIONAL, 'DB Authentication: Username', 'root' );
 		$this->addOption( 'db-pass', null, InputOption::VALUE_OPTIONAL, 'DB Authentication: Password', 'root' );

@@ -22,6 +22,10 @@ class DumpCommand extends Command {
 
 	protected function configure(): void {
 
+		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$this->setName( self::$defaultName );
+		$this->setDescription( self::$defaultDescription );
+		// phpcs:enable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$this->addArgument( 'path', InputArgument::OPTIONAL, 'Specify the dump path', './' );
 
 	}

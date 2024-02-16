@@ -24,6 +24,10 @@ class TestCommandTest extends TestCase {
 			'integration',
 		);
 
+		if ( defined( 'WP_TESTS_TABLE_PREFIX' ) ) {
+			unset( $types[0] );
+		}
+
 		foreach ( $types as $type ) {
 			ob_start();
 			$tester->execute( array( '--type' => $type ) );

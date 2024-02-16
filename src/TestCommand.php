@@ -23,6 +23,10 @@ class TestCommand extends Command {
 
 	protected function configure(): void {
 
+		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$this->setName( self::$defaultName );
+		$this->setDescription( self::$defaultDescription );
+		// phpcs:enable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$this->addArgument( 'path', InputArgument::OPTIONAL, 'Specify the test path', './tests' );
 		$this->addArgument( 'extra', InputArgument::IS_ARRAY, 'To be passed to <info>phpunit</info>', array() );
 		$this->addOption( 'type', null, InputOption::VALUE_REQUIRED, 'Filter which testsuite to run', 'default' );
