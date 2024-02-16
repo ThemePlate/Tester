@@ -31,7 +31,7 @@ class AnalyseCommand extends Command {
 	protected function execute( InputInterface $input, OutputInterface $output ): int {
 
 		$base   = DIRECTORY_SEPARATOR . 'phpstan.neon';
-		$config = dirname( __FILE__, 2 ) . $base;
+		$config = dirname( __DIR__ ) . $base;
 
 		if ( file_exists( getcwd() . $base ) ) {
 			$config = getcwd() . $base;

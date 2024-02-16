@@ -36,7 +36,7 @@ class DumpCommand extends Command {
 		);
 
 		$helper = $this->getHelper( 'question' );
-		$source = dirname( __FILE__, 2 ) . DIRECTORY_SEPARATOR;
+		$source = dirname( __DIR__ ) . DIRECTORY_SEPARATOR;
 
 		$destination = rtrim( $input->getArgument( 'path' ), '/\\' ) . DIRECTORY_SEPARATOR;
 

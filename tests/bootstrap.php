@@ -27,7 +27,7 @@ if ( false !== $_phpunit_polyfills_path ) {
 if ( ! file_exists( "{$_tests_dir}/includes/functions.php" ) ) {
 	$_work_dir = '.';
 
-	if ( getcwd() !== dirname( __FILE__, 2 ) ) {
+	if ( getcwd() !== dirname( __DIR__ ) ) {
 		$_work_dir .= '/vendor';
 	}
 
