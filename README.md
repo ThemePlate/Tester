@@ -17,7 +17,7 @@
 {
 	"name": "my/package",
 	"require": {
-		"php": "^7.4|^8.0"
+		"php": "^7.4|^8.2"
 	},
 	"require-dev": {
 		"themeplate/tester": "*"
