@@ -28,8 +28,8 @@
 	<!-- Include PHP Compatibility Coding Standard for WordPress. -->
 	<rule ref="PHPCompatibilityWP" />
 
-	<!-- Exclude for PSR-4 autoload -->
-	<rule ref="WordPress.Files.FileName">
+	<!-- Custom Rules -->
+	<rule ref="WordPress.Files">
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="PSR2.Methods.FunctionClosingBrace.SpacingBeforeClose" />

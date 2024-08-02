@@ -14,10 +14,10 @@ use ReflectionProperty;
 
 class Utils {
 
-	protected static function get_reflection( string $class, string $type, string $name ) {
+	protected static function get_reflection( string $object_or_class, string $type, string $name ) {
 
 		try {
-			$reflector = new ReflectionClass( $class );
+			$reflector = new ReflectionClass( $object_or_class );
 
 			$method = 'get' . ucfirst( $type );
 			$wanted = $reflector->$method( $name );
@@ -31,16 +31,16 @@ class Utils {
 
 	}
 
-	public static function get_reflection_method( string $class, string $name ): ?ReflectionMethod {
+	public static function get_reflection_method( string $object_or_class, string $name ): ?ReflectionMethod {
 
-		return self::get_reflection( $class, 'method', $name );
+		return self::get_reflection( $object_or_class, 'method', $name );
 
 	}
 
 
-	public static function get_reflection_property( string $class, string $name ): ?ReflectionProperty {
+	public static function get_reflection_property( string $object_or_class, string $name ): ?ReflectionProperty {
 
-		return self::get_reflection( $class, 'property', $name );
+		return self::get_reflection( $object_or_class, 'property', $name );
 
 	}
 

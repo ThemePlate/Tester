@@ -45,14 +45,14 @@ class DumpCommand extends Command {
 		$destination = rtrim( $input->getArgument( 'path' ), '/\\' ) . DIRECTORY_SEPARATOR;
 
 		if ( ! is_dir( $destination ) ) {
-			mkdir( $destination );
+			mkdir( $destination ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_mkdir
 		}
 
 		foreach ( $files as $file ) {
 			if ( file_exists( $destination . $file ) ) {
 				$question = new ConfirmationQuestion( 'Overwrite "' . $file . '"? ', false );
 
-				if ( ! $helper->ask( $input, $output, $question ) ) {
+				if ( method_exists( $helper, 'ask' ) && ! $helper->ask( $input, $output, $question ) ) {
 					$output->writeln( 'Skipped "' . $file . '"' );
 					continue;
 				}
