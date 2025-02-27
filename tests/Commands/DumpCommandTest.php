@@ -28,9 +28,9 @@ class DumpCommandTest extends TestCase {
 		}
 
 		foreach ( glob( $path . '/*', GLOB_MARK ) as $file ) {
-			unlink( $file );
+			unlink( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
 		}
 
-		rmdir( $path );
+		rmdir( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir
 	}
 }
