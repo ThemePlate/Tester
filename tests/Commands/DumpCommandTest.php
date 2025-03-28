@@ -10,6 +10,8 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use ThemePlate\Tester\DumpCommand;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class DumpCommandTest extends TestCase {
 	public function testExecute(): void {
@@ -27,8 +29,18 @@ class DumpCommandTest extends TestCase {
 			$tester->assertCommandIsSuccessful();
 		}
 
-		foreach ( glob( $path . '/*', GLOB_MARK ) as $file ) {
-			unlink( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
+		$files = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator(
+				$path,
+				RecursiveDirectoryIterator::SKIP_DOTS
+			),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ( $files as $fileinfo ) {
+			$command = ( $fileinfo->isDir() ? 'rmdir' : 'unlink' );
+
+			$command( $fileinfo->getRealPath() );
 		}
 
 		rmdir( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir

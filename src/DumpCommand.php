@@ -37,6 +37,7 @@ class DumpCommand extends Command {
 			'phpcs.xml',
 			'phpstan.neon',
 			'phpunit.xml',
+			'tests/bootstrap.php',
 		);
 
 		$helper = $this->getHelper( 'question' );
@@ -46,6 +47,10 @@ class DumpCommand extends Command {
 
 		if ( ! is_dir( $destination ) ) {
 			mkdir( $destination ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_mkdir
+		}
+
+		if ( ! is_dir( $destination . 'tests' ) ) {
+			mkdir( $destination . 'tests' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_mkdir
 		}
 
 		foreach ( $files as $file ) {
