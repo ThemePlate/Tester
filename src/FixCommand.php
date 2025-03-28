@@ -26,7 +26,7 @@ class FixCommand extends Command {
 		$this->setName( self::$defaultName );
 		$this->setDescription( self::$defaultDescription );
 		// phpcs:enable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$this->addArgument( 'path', InputArgument::OPTIONAL, 'Specify the fix path', './src' );
+		$this->addArgument( 'path', InputArgument::OPTIONAL, 'Specify the fix path', '.' );
 		$this->addArgument( 'extra', InputArgument::IS_ARRAY, 'To be passed to <info>phpcbf</info>', array() );
 
 	}
