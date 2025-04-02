@@ -45,6 +45,9 @@ class Utils {
 	}
 
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public static function invoke_inaccessible_method( object $instance, string $name, array $args = array() ) {
 
 		$reflection = self::get_reflection_method( get_class( $instance ), $name );
