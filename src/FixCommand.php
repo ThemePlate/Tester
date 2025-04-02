@@ -51,9 +51,9 @@ class FixCommand extends Command {
 
 		$process = new Process( $args );
 
-		$process->run(
-			function ( $type, $buffer ) {
-				echo $buffer; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$process->setTty( true )->run(
+			function ( $type, $buffer ) use ( $output ): void {
+				$output->write( $buffer );
 			}
 		);
 
