@@ -32,10 +32,10 @@
 	<!-- Include minimum supported WP version. -->
 	<config name="minimum_supported_wp_version" value="5.9" />
 
+	<!-- Include PHP Compatibility Coding Standard. -->
+	<rule ref="PHPCompatibilityWP" />
 	<!-- Include the WordPress ruleset. -->
 	<rule ref="WordPress-Extra" />
-	<!-- Include PHP Compatibility Coding Standard for WordPress. -->
-	<rule ref="PHPCompatibilityWP" />
 
 	<!-- Custom Rules -->
 	<rule ref="WordPress.Files">

@@ -52,7 +52,7 @@ class Utils {
 
 		$reflection = self::get_reflection_method( get_class( $instance ), $name );
 
-		if ( null === $reflection ) {
+		if ( ! $reflection instanceof ReflectionMethod ) {
 			return null;
 		}
 
@@ -65,7 +65,7 @@ class Utils {
 
 		$reflection = self::get_reflection_property( get_class( $instance ), $name );
 
-		if ( null === $reflection ) {
+		if ( ! $reflection instanceof ReflectionProperty ) {
 			return null;
 		}
 
@@ -78,7 +78,7 @@ class Utils {
 
 		$reflection = self::get_reflection_property( get_class( $instance ), $name );
 
-		if ( null === $reflection ) {
+		if ( ! $reflection instanceof ReflectionProperty ) {
 			return;
 		}
 

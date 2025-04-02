@@ -29,7 +29,7 @@ class UtilsTest extends TestCase {
 	}
 
 
-	public function test_invoking_unknown_method() {
+	public function test_invoking_unknown_method(): void {
 
 		$value = Utils::invoke_inaccessible_method( $this->unliberated, 'tester' );
 
@@ -38,7 +38,7 @@ class UtilsTest extends TestCase {
 	}
 
 
-	public function test_getting_unknown_property() {
+	public function test_getting_unknown_property(): void {
 
 		$value = Utils::get_inaccessible_property( $this->unliberated, 'tester' );
 
@@ -47,7 +47,7 @@ class UtilsTest extends TestCase {
 	}
 
 
-	public function test_setting_unknown_property() {
+	public function test_setting_unknown_property(): void {
 
 		Utils::set_inaccessible_property( $this->unliberated, 'tester', true );
 
@@ -56,7 +56,7 @@ class UtilsTest extends TestCase {
 	}
 
 
-	public function test_liberate_method() {
+	public function test_liberate_method(): void {
 
 		$value = Utils::invoke_inaccessible_method( $this->unliberated, 'method_name', array( 1 ) );
 
@@ -66,7 +66,7 @@ class UtilsTest extends TestCase {
 	}
 
 
-	public function test_liberate_property() {
+	public function test_liberate_property(): void {
 
 		$value = Utils::get_inaccessible_property( $this->unliberated, 'property_name' );
 
@@ -76,7 +76,7 @@ class UtilsTest extends TestCase {
 	}
 
 
-	public function test_forced_property_value() {
+	public function test_forced_property_value(): void {
 
 		$expect = 'OWNED!';
 
