@@ -8,6 +8,7 @@
 namespace ThemePlate\Tester\Tests\Integration;
 
 use ThemePlate\Tester\Utils;
+use WP_Error;
 use WP_UnitTestCase;
 use WP_User;
 
@@ -18,8 +19,15 @@ class UtilsTest extends WP_UnitTestCase {
 
 	protected function setUp(): void {
 
-		$user_id    = $this->factory()->user->create();
-		$this->user = get_user_by( 'ID', $user_id );
+		$user_id = $this->factory()->user->create();
+
+		if ( ! $user_id instanceof WP_Error ) {
+			$user = get_user_by( 'ID', $user_id );
+
+			if ( false !== $user ) {
+				$this->user = $user;
+			}
+		}
 
 	}
 
