@@ -50,7 +50,7 @@ class LintCommand extends Command {
 
 		$process = new Process( $args );
 
-		$process->setTty( true )->run(
+		$process->setTty( Process::isTtySupported() )->run(
 			function ( $type, $buffer ) use ( $output ): void {
 				$output->write( $buffer );
 			}
