@@ -7,6 +7,7 @@
 namespace ThemePlate\Tester;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,6 +41,7 @@ class DumpCommand extends Command {
 			'tests/bootstrap.php',
 		);
 
+		/** @var QuestionHelper $helper */
 		$helper = $this->getHelper( 'question' );
 		$source = dirname( __DIR__ ) . DIRECTORY_SEPARATOR;
 
@@ -57,7 +59,7 @@ class DumpCommand extends Command {
 			if ( file_exists( $destination . $file ) ) {
 				$question = new ConfirmationQuestion( 'Overwrite "' . $file . '"? ', false );
 
-				if ( method_exists( $helper, 'ask' ) && ! $helper->ask( $input, $output, $question ) ) {
+				if ( ! $helper->ask( $input, $output, $question ) ) {
 					$output->writeln( 'Skipped "' . $file . '"' );
 					continue;
 				}
