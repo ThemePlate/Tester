@@ -16,7 +16,10 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class DumpCommand extends Command {
 
 	// phpcs:disable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
-	protected static $defaultName        = 'dump';
+	/** @var string */
+	protected static $defaultName = 'dump';
+
+	/** @var string */
 	protected static $defaultDescription = 'Dump the configs';
 	// phpcs:enable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
 

@@ -15,7 +15,10 @@ use Symfony\Component\Process\Process;
 class AnalyseCommand extends Command {
 
 	// phpcs:disable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
-	protected static $defaultName        = 'analyse';
+	/** @var string */
+	protected static $defaultName = 'analyse';
+
+	/** @var string */
 	protected static $defaultDescription = 'Analyse the codes';
 	// phpcs:enable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
 

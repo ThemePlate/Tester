@@ -15,7 +15,10 @@ use Symfony\Component\Process\Process;
 class SetupCommand extends Command {
 
 	// phpcs:disable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
-	protected static $defaultName        = 'setup';
+	/** @var string */
+	protected static $defaultName = 'setup';
+
+	/** @var string */
 	protected static $defaultDescription = 'Setup the tests';
 	// phpcs:enable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
 

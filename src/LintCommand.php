@@ -15,7 +15,10 @@ use Symfony\Component\Process\Process;
 class LintCommand extends Command {
 
 	// phpcs:disable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
-	protected static $defaultName        = 'lint';
+	/** @var string */
+	protected static $defaultName = 'lint';
+
+	/** @var string */
 	protected static $defaultDescription = 'Lint the codes';
 	// phpcs:enable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
 

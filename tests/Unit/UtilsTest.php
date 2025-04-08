@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class UtilsTest extends TestCase {
 
-	protected $unliberated;
+	protected object $unliberated;
 
 
 	protected function setUp(): void {

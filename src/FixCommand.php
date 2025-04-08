@@ -15,7 +15,10 @@ use Symfony\Component\Process\Process;
 class FixCommand extends Command {
 
 	// phpcs:disable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
-	protected static $defaultName        = 'fix';
+	/** @var string */
+	protected static $defaultName = 'fix';
+
+	/** @var string */
 	protected static $defaultDescription = 'Fix the codes';
 	// phpcs:enable WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase
 
