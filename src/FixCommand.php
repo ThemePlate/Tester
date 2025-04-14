@@ -60,7 +60,7 @@ class FixCommand extends Command {
 			}
 		);
 
-		return Command::SUCCESS;
+		return $process->isSuccessful() ? Command::SUCCESS : Command::FAILURE;
 
 	}
 
