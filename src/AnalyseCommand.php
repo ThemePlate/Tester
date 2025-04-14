@@ -53,15 +53,13 @@ class AnalyseCommand extends Command {
 			...$input->getArgument( 'extra' ),
 		);
 
-		$process = new Process( $args );
-
-		$process->setTty( Process::isTtySupported() )->run(
-			function ( $type, $buffer ) use ( $output ): void {
-				$output->write( $buffer );
-			}
-		);
-
-		return $process->isSuccessful() ? Command::SUCCESS : Command::FAILURE;
+		return ( new Process( $args ) )
+			->setPty( Process::isPtySupported() )
+			->run(
+				function ( $type, $buffer ) use ( $output ): void {
+					$output->write( $buffer );
+				}
+			);
 
 	}
 
