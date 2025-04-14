@@ -18,7 +18,7 @@ class SetupCommandTest extends TestCase {
 
 		( new Application() )->add( $command );
 		ob_start();
-		$tester->execute( array() );
+		$tester->execute( array( '--db-creation' => 'false' ) );
 		$this->assertIsString( ob_get_clean() );
 		$tester->assertCommandIsSuccessful();
 	}
