@@ -65,7 +65,7 @@ install_wp() {
 	local ARCHIVE_NAME=''
 	local DOWNLOAD_URL=''
 
-	if [ $WP_VERSION == 'latest' ]; then
+	if [[ $WP_VERSION == 'latest' ]]; then
 		FORCE_DOWNLOAD='true'
 		ARCHIVE_NAME='wordpress-latest'
 		DOWNLOAD_URL="https://wordpress.org/latest.tar.gz"
@@ -142,7 +142,7 @@ install_test_suite() {
 }
 
 recreate_db() {
-	if [ ${DB_CREATE} = "force" ]; then
+	if [[ $DB_CREATE == 'force' ]]; then
 		mysqladmin drop $DB_NAME -f --user="$DB_USER" --password="$DB_PASS"$EXTRA
 		create_db
 		echo "Recreated the database ($DB_NAME)."
@@ -156,7 +156,7 @@ create_db() {
 }
 
 install_db() {
-	if [ ${DB_CREATE} = "false" ]; then
+	if [[ $DB_CREATE == 'false' ]]; then
 		return 0
 	fi
 
